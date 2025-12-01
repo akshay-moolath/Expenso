@@ -1,219 +1,234 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Login — Expenso</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expenso - Login</title>
 
-  <style>
-    :root{
-      --radius:16px;
-      --accent: #2563eb;
-      --accent-2: #06b6d4;
-      --muted: rgba(15,23,42,0.6);
-      --glass-1: rgba(255,255,255,0.65);
-      --glass-2: rgba(255,255,255,0.50);
-      --danger: #ef4444;
-      --ok: #059669;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-      color-scheme: light;
-    }
+    <style>
+        :root {
+            --radius: 12px;
+            --accent: #2563eb;
+            --accent-2: #06b6d4;
+            --muted: rgba(15, 23, 42, 0.6);
+            --glass-1: rgba(255, 255, 255, 0.65);
+            --glass-2: rgba(255, 255, 255, 0.50);
+            font-family: Inter, system-ui, sans-serif;
+        }
 
-    /* background */
-    html,body{
-      height:100%;
-      margin:0;
-      background:
-        radial-gradient(900px 500px at 10% 10%, rgba(102,126,234,0.07), transparent 8%),
-        radial-gradient(700px 400px at 90% 80%, rgba(3,218,198,0.05), transparent 8%),
-        linear-gradient(180deg,#f8fafc,#eef2ff);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:28px;
-    }
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background:
+                radial-gradient(900px 500px at 10% 10%, rgba(102, 126, 234, 0.07), transparent 8%),
+                radial-gradient(700px 400px at 90% 80%, rgba(3, 218, 198, 0.05), transparent 8%),
+                linear-gradient(180deg, #f8fafc, #eef2ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 28px;
+        }
 
-    /* card */
-    .card{
-      width:100%;
-      max-width:460px;
-      border-radius:var(--radius);
-      padding:28px;
-      background: linear-gradient(180deg, var(--glass-1), var(--glass-2));
-      border: 1px solid rgba(255,255,255,0.6);
-      box-shadow: 0 14px 50px rgba(11,20,40,0.08);
-      backdrop-filter: blur(10px) saturate(120%);
-      -webkit-backdrop-filter: blur(10px) saturate(120%);
-      position:relative;
-      overflow:hidden;
-    }
+        .card {
+            width: 100%;
+            max-width: 420px;
+            padding: 28px;
+            border-radius: var(--radius);
+            background: linear-gradient(180deg, var(--glass-1), var(--glass-2));
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 14px 50px rgba(11, 20, 40, 0.08);
+            backdrop-filter: blur(10px) saturate(120%);
+        }
 
-    .card::before{
-      content:'';
-      position:absolute;
-      inset:-40% -40% auto -40%;
-      height:200px;
-      background: linear-gradient(90deg, rgba(96,165,250,0.06), rgba(16,185,129,0.04));
-      transform: rotate(6deg);
-      pointer-events:none;
-    }
+        h1 {
+            margin: 0 0 6px;
+            font-size: 26px;
+            color: #0b3aa6;
+        }
 
-    h1{ margin:0 0 6px; font-size:26px; color:#0b3aa6; }
-    p.lead{ margin:0 0 18px; color:var(--muted); font-size:14px; }
+        p.lead {
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-size: 14px;
+        }
 
-    .grid{ display:grid; gap:12px; margin-top:12px; }
+        .grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 12px;
+        }
 
-    label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
-    input{
-      width:100%;
-      padding:12px 14px;
-      border-radius:10px;
-      border:1px solid rgba(15,23,42,0.06);
-      background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(250,250,250,0.7));
-      font-size:15px;
-      color: #08203a;
-      outline:none;
-      transition: box-shadow .12s ease, transform .06s ease, border-color .12s ease;
-    }
-    input::placeholder{ color: rgba(11,20,40,0.35); }
+        label {
+            font-size: 13px;
+            color: var(--muted);
+        }
 
-    input:focus{
-      border-color: rgba(37,99,235,0.85);
-      box-shadow: 0 10px 30px rgba(37,99,235,0.06);
-      transform: translateY(-1px);
-      background: rgba(255,255,255,0.95);
-    }
+        input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            background: rgba(255, 255, 255, 0.8);
+            font-size: 15px;
+        }
 
-    .primary{
-      width:100%;
-      padding:12px 16px;
-      border-radius:12px;
-      border:0;
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
-      background: linear-gradient(90deg,var(--accent),var(--accent-2));
-      box-shadow: 0 10px 30px rgba(51,102,255,0.14);
-      margin-top:6px;
-    }
-    .primary:hover{ transform: translateY(-2px); box-shadow: 0 14px 40px rgba(51,102,255,0.2); }
+        button.primary {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            color: #fff;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 6px;
+        }
 
-    .footer{ margin-top:14px; text-align:center; color:var(--muted); font-size:14px; }
-    .footer a{ color:var(--accent); text-decoration:none; font-weight:600; }
-    .footer a:hover{ text-decoration:underline; }
+        .footer {
+            margin-top: 14px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted);
+        }
 
-    #msg{
-      margin-top:14px;
-      padding:10px;
-      border-radius:8px;
-      font-weight:600;
-      display:none;
-      font-size:14px;
-    }
-    #msg.error{ display:block; background: rgba(254,226,226,0.95); color: #b91c1c; border:1px solid rgba(254,202,202,0.9); }
-    #msg.success{ display:block; background: rgba(220,253,235,0.95); color: #047857; border:1px solid rgba(167,243,208,0.9); }
-    #msg.status{ display:block; background: rgba(245,247,250,0.95); color:var(--muted); border:1px solid rgba(226,232,240,0.9); }
+        .footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
 
-    @media (max-width:520px){
-      .card{ padding:20px; border-radius:12px; }
-      h1{ font-size:22px; }
-    }
-  </style>
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        #msg {
+            margin-top: 14px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+        }
+
+        #msg.error {
+            display: block;
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        #msg.success {
+            display: block;
+            background: #dcfce7;
+            color: #047857;
+            border: 1px solid #bbf7d0;
+        }
+
+        #msg.status {
+            display: block;
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+    </style>
 </head>
+
 <body>
-  <div class="card" role="main" aria-labelledby="login-title">
-    <h1 id="login-title">Welcome back</h1>
-    <p class="lead">Sign in to your Expenso account to view and manage your expenses.</p>
+    <div class="card">
+        <h1>Welcome back</h1>
+        <p class="lead">Sign in to continue</p>
 
-    <form id="login-form" aria-describedby="msg">
-      <div class="grid">
-        <div>
-          <label for="username">Username</label>
-          <input id="username" name="username" placeholder="Enter your username" required autocomplete="username" />
-        </div>
+        <form id="login-form">
+            <div class="grid">
+                <div>
+                    <label>Username</label>
+                    <input id="username" placeholder="Enter your username" required />
+                </div>
 
-        <div>
-          <label for="password">Password</label>
-          <input id="password" name="password" type="password" placeholder="••••••••" required autocomplete="current-password" />
-        </div>
+                <div>
+                    <label>Password</label>
+                    <input id="password" type="password" placeholder="••••••••" required />
+                </div>
 
-        <button class="primary" type="submit">Sign in</button>
-      </div>
+                <button class="primary" type="submit">Login</button>
+            </div>
 
-      <div class="footer">
-        Don't have an account?
-        <a href="/register-page" aria-label="Go to register">Create an account</a>
-      </div>
+            <div class="footer">
+                Don’t have an account?
+                <a href="/register-page">Create one</a>
+            </div>
 
-      <div id="msg" role="status" aria-live="polite"></div>
-    </form>
-  </div>
+            <div id="msg"></div>
+        </form>
+    </div>
 
-<script>
-/* Keeps existing backend logic intact:
-   - posts JSON to /api/login
-   - stores access_token and username in localStorage
-   - shows messages in #msg
-*/
-const form = document.getElementById('login-form');
-const msg = document.getElementById('msg');
+    <script>
+        /* -------------------------------------
+           1️⃣ INSTANT REDIRECT IF ALREADY LOGGED IN  
+        -------------------------------------- */
+        const fastToken = localStorage.getItem("access_token");
+        if (fastToken) {
+            window.location.href = "/dashboard";
+        }
 
-function setMsg(type, text){
-  msg.className = '';
-  msg.textContent = text;
-  if (type === 'error') {
-    msg.classList.add('error');
-    msg.style.display = 'block';
-  } else if (type === 'success') {
-    msg.classList.add('success');
-    msg.style.display = 'block';
-  } else {
-    msg.classList.add('status');
-    msg.style.display = 'block';
-  }
-}
+        /* -------------------------------------
+           2️⃣ SHOW LOGIN MESSAGES 
+        -------------------------------------- */
+        const msg = document.getElementById("msg");
+        const form = document.getElementById("login-form");
 
-function clearMsg(){
-  msg.style.display = 'none';
-  msg.className = '';
-  msg.textContent = '';
-}
+        function setMsg(type, text) {
+            msg.className = type;
+            msg.textContent = text;
+            msg.style.display = "block";
+        }
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  clearMsg();
-  setMsg('status','Signing in…');
+        /* -------------------------------------
+           3️⃣ LOGIN REQUEST + SAVE TOKEN 
+        -------------------------------------- */
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-  const payload = {
-    username: form.username.value.trim(),
-    password: form.password.value
-  };
+            const payload = {
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+            };
 
-  try {
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
+            setMsg("status", "Signing in...");
 
-    const body = await (async ()=>{ try{return await res.json()}catch{return null} })();
+            try {
+                const res = await fetch("/api/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
 
-    if (res.ok) {
-      if (body?.username) localStorage.setItem('username', body.username);
-      if (body?.access_token) localStorage.setItem('access_token', body.access_token);
+                const data = await res.json();
 
-      setMsg('success', 'Login successful — Redirecting…');
-      setTimeout(() => { window.location.href = '/dashboard'; }, 500);
-    } else {
-      setMsg('error', body?.detail || 'Login failed. Check credentials.');
-    }
-  } catch (err) {
-    console.error(err);
-    setMsg('error', 'Network error: check server connection.');
-  }
-});
-</script>
+                if (!res.ok) {
+                    setMsg("error", data?.detail || "Invalid credentials");
+                    return;
+                }
+
+                const token = data.access_token;
+
+                // Save token (your previous logic)
+                localStorage.setItem("access_token", token);
+                localStorage.setItem("username", data.username);
+
+                // 2️⃣ Also set a cookie for server-side future redirects
+                document.cookie = "access_token=" + encodeURIComponent(token) + "; path=/";
+
+                setMsg("success", "Login successful! Redirecting...");
+                setTimeout(() => {
+                    window.location.href = "/dashboard";
+                }, 500);
+
+            } catch (err) {
+                setMsg("error", "Network error");
+            }
+        });
+    </script>
 </body>
+
 </html>
