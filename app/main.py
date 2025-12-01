@@ -2,7 +2,7 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles#for getting simple html page for login,register and dashboard
 from fastapi.responses import FileResponse
 from app.db import Base, engine
-
+import app.models
 
 
 Base.metadata.create_all(bind=engine)
