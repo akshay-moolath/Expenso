@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Expenso — Dashboard</title>
+  <link rel="stylesheet" href="/static/css/dashboard.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">E</div>
+        <div>
+          <h1>Expenso</h1>
+          <div class="sub">Quick dashboard</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;align-items:center">
+        <div class="muted small">Hi, <span id="username">—</span></div>
+        <button id="logout" class="btn ghost">Logout</button>
+      </div>
+    </header>
+
+    <div class="top-cards">
+      <div class="card">
+        <h3>Total spent</h3>
+        <div class="big" id="total">₹0.00</div>
+        <div class="small muted">All time</div>
+      </div>
+
+      <div class="card">
+        <h3>Transactions</h3>
+        <div class="big" id="count">0</div>
+        <div class="small muted">Total records</div>
+      </div>
+
+      <div class="card">
+        <h3>Latest</h3>
+        <div class="big small" id="latestTitle">—</div>
+        <div class="small muted" id="latestDate">—</div>
+      </div>
+    </div>
+
+    <!-- Controls: filters / sort / add -->
+    <div class="controls">
+      <div class="filters">
+        <label class="small muted">Weekday</label>
+        <select id="weekdayFilter" title="Filter by weekday">
+          <option value="all">All</option>
+          <option value="0">Sun</option>
+          <option value="1">Mon</option>
+          <option value="2">Tue</option>
+          <option value="3">Wed</option>
+          <option value="4">Thu</option>
+          <option value="5">Fri</option>
+          <option value="6">Sat</option>
+        </select>
+    
+        <label class="small muted">Month</label>
+        <select id="monthFilter" title="Filter by month"></select>
+
+        <label class="small muted">Sort</label>
+        <select id="sortBy" title="Sort">
+          <option value="date_desc">Date: newest</option>
+          <option value="date_asc">Date: oldest</option>
+          <option value="amount_asc">Amount: low → high</option>
+          <option value="amount_desc">Amount: high → low</option>
+        </select>
+      </div>
+      
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <input id="search" type="search" placeholder="search title, desc, category" />
+        <button id="exportCsvBtn" class="btn ghost export">
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 10v4a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-4"/>
+    <path d="M7 7l3 3 3-3"/>
+    <path d="M10 10V3"/>
+  </svg>
+  CSV
+</button>
+
+<button id="exportPdfBtn" class="btn ghost export">
+  <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="2" width="10" height="12" rx="2"/>
+    <path d="M7 6h4"/>
+    <path d="M7 9h4"/>
+  </svg>
+  PDF
+</button>
+
+        <button id="showForm" class="btn">Add expense</button>
+      </div>
+    </div>
+
+    <!-- table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th class="small">Amount</th>
+            <th class="small">Description</th>
+            <th class="small">Created</th>
+            <th class="small">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="6" class="center muted">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- add / edit form -->
+    <div id="formPanel" style="display:none">
+      <strong id="formTitle">Add Expense</strong>
+      <form id="expenseForm" class="inline" onsubmit="return false;">
+        <input name="title" placeholder="Title" required style="flex:2;min-width:140px" />
+        <input name="category" placeholder="Category" style="width:140px" />
+        <input name="amount" type="number" step="0.01" placeholder="Amount (₹)" required style="width:120px" />
+        <input name="description" placeholder="Description" style="flex:3;min-width:160px" />
+        <input type="hidden" name="id" />
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="saveBtn" class="btn">Save</button>
+          <button id="cancelBtn" class="btn ghost" type="button">Cancel</button>
+        </div>
+      </form>
+      <div id="formError" class="error" style="display:none"></div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="/static/js/dashboard.js" defer></script>
+</body>
+</html>

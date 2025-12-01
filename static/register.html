@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Register — Expenso</title>
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --accent-light: #3b82f6;
+      --radius: 12px;
+      --shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      --error-bg: #ffe8e8;
+      --error-text: #b91c1c;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #f1f5f9, #ffffff);
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      min-height: 100vh;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 500px;
+      background: var(--card);
+      padding: 28px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 26px;
+      color: var(--accent);
+    }
+
+    p.lead {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #f1f5f9;
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 14px;
+      box-sizing: border-box;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      background: #ffffff;
+    }
+
+    button.primary {
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      border: none;
+      padding: 12px;
+      color: #ffffff;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    button.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+    }
+
+    .link {
+      background: none;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: underline;
+      margin-left: 6px;
+      font-size: 14px;
+    }
+
+    .footer {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    #msg {
+      margin-top: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    #msg.error {
+      display: block;
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid #fecaca;
+    }
+
+    #msg.success {
+      display: block;
+      background: #e6fffa;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Create your account</h1>
+    <p class="lead">Join Expenso to add and manage your expenses.</p>
+
+    <form id="register-form">
+      <input name="username" placeholder="Choose a username" required />
+      <input name="email" placeholder="Your email address" required />
+      <input name="password" type="password" placeholder="Create a password" required />
+
+      <button class="primary" type="submit">Create Account</button>
+
+      <div class="footer">
+        Already have an account?
+        <button class="link" type="button" onclick="location.href='/'">Login</button>
+      </div>
+
+      <div id="msg"></div>
+    </form>
+  </div>
+
+<script>
+const form = document.getElementById("register-form");
+const msg = document.getElementById("msg");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  msg.style.display = "block";
+  msg.className = "";
+  msg.classList.add("error");
+  msg.textContent = "Registering...";
+
+  const payload = {
+    username: form.username.value.trim(),
+    email: form.email.value.trim(),
+    password: form.password.value,
+  };
+
+  try {
+    const res = await fetch("/api/users", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(payload),
+    });
+
+    const body = await (async () => { try { return await res.json(); } catch { return null; } })();
+
+    if (res.ok) {
+      msg.className = "success";
+      msg.textContent = "Registration successful! Redirecting...";
+      setTimeout(() => (location.href = "/"), 800);
+      return;
+    }
+
+    msg.className = "error";
+    msg.textContent = body?.detail || "Registration failed.";
+
+  } catch (err) {
+    console.error(err);
+    msg.className = "error";
+    msg.textContent = "Network error. Try again.";
+  }
+});
+</script>
+
+</body>
+</html>

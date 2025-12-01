@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login — Expenso</title>
+  <style>
+    /* VARIABLES: LIGHT Theme colors */
+    :root{
+      --bg: #f8fafc; 
+      --card: #ffffff;
+      --muted: #64748b; 
+      --accent: #1e40af; /* Main Blue Accent */
+      --ok: #059669; /* Success Green */
+      --danger: #b91c1c; /* Danger Red */
+      --text: #0f172a; /* Dark Text Color */
+      --radius:12px;
+      --gap:14px; 
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      /* Soft gradient background */
+      background: linear-gradient(135deg, var(--bg) 0%, #f1f5f9 100%);
+      color:var(--text);
+    }
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+    .card{
+      width:100%;
+      max-width:420px;
+      /* Enhanced border and shadow for light theme */
+      background: var(--card);
+      border: 1px solid #e2e8f0;
+      border-radius:var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+      padding:26px;
+    }
+    .card h2{
+      margin: 0 0 4px;
+      color: var(--accent);
+      font-size: 24px;
+    }
+    .card p.lead{
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    
+    .field{margin-bottom:var(--gap);}
+    .field label{
+      display:block;
+      margin-bottom:6px;
+      font-size:14px;
+      color:var(--muted);
+    }
+    input{
+      width:100%;
+      box-sizing:border-box;
+      padding:12px;
+      border-radius:8px;
+      background: #f1f5f9; /* Light input background */
+      border:1px solid #e2e8f0;
+      color:var(--text);
+      font-size:16px;
+      outline:none;
+      transition:border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus{
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
+      background: var(--card);
+    }
+
+    button{
+      border:0;
+      padding:12px 20px;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:600;
+      transition:all 0.2s;
+    }
+    button.primary{
+      width:100%;
+      background:linear-gradient(90deg,var(--accent),#3b82f6);
+      color:var(--card); /* White text for contrast */
+      margin-top:var(--gap);
+      box-shadow:0 4px 10px rgba(30, 64, 175, 0.3);
+    }
+    button.primary:hover{transform:translateY(-1px);box-shadow:0 6px 15px rgba(30, 64, 175, 0.4)}
+    
+    .row{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:var(--gap);
+    }
+    .row a {
+        color:var(--accent); 
+        text-decoration: none; 
+        font-weight: 600;
+    }
+    .row a:hover {
+        text-decoration: underline;
+    }
+
+    /* Simple text feedback */
+    .msg-feedback{
+      margin-top:20px;
+      font-size:14px;
+      text-align: center;
+      display: none; /* Hidden by default */
+      padding: 8px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .msg-error{
+      color:var(--danger);
+      background: #ffebeb; /* Very light pink background */
+      border: 1px solid #fecaca;
+    }
+    .msg-success{
+      color:var(--ok);
+      background: #eafff5; /* Very light green background */
+      border: 1px solid #a7f3d0;
+    }
+    .msg-status{
+      color:var(--muted);
+      background: #f1f5f9; /* Neutral status background */
+      border: 1px solid #e2e8f0;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h2>Expenso Login</h2>
+      <p class="lead">Sign in to manage your expenses.</p>
+
+      <form id="login-form">
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" placeholder="Enter your username" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="••••••••" required />
+        </div>
+
+        <button class="primary" type="submit">Sign in</button>
+        <div class="row">
+          <small style="color:var(--muted)">
+            Don't have an account? 
+            <!-- Link pointing to the register page file -->
+            <a href="/register-page">Register here</a> 
+          </small>
+        </div>
+
+        <!-- Single, hidden feedback element for all messages -->
+        <div id="feedback-msg" class="msg-feedback" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+
+<script>
+const form = document.getElementById('login-form');
+const feedbackMsg = document.getElementById('feedback-msg');
+
+function clearMessages() {
+    feedbackMsg.textContent = '';
+    feedbackMsg.style.display = 'none';
+    feedbackMsg.className = 'msg-feedback'; // Reset classes
+}
+
+function showMessage(type, text) {
+    clearMessages();
+    feedbackMsg.textContent = text;
+    feedbackMsg.style.display = 'block';
+    
+    // Set class based on message type
+    if (type === 'error') {
+        feedbackMsg.classList.add('msg-error');
+    } else if (type === 'success') {
+        feedbackMsg.classList.add('msg-success');
+    } else {
+        feedbackMsg.classList.add('msg-status');
+    }
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  showMessage('status', 'Signing in...');
+
+  const payload = { 
+    username: form.username.value.trim(), 
+    password: form.password.value 
+  };
+
+  try {
+    const res = await fetch('/api/login', {
+      method: 'POST', 
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+
+    // Helper function to safely parse JSON response
+    const body = await (async ()=>{ try{return await res.json()}catch{return null} })();
+
+    if (res.ok) {
+      // store plain username for UI only
+      localStorage.setItem('username', body.username);
+localStorage.setItem('access_token', body.access_token);
+      showMessage('success', 'Login successful! Redirecting...');
+      
+      setTimeout(() => {
+        // Redirect to dashboard
+        window.location.href = '/dashboard'; 
+      }, 500);
+      
+    } else {
+      // Display specific error detail or generic fail message
+      showMessage('error', body?.detail || 'Login failed. Please check your credentials.');
+    }
+  } catch(err) {
+    console.error(err);
+    showMessage('error', 'Network error: check server connection.');
+  }
+});
+</script>
+</body>
+</html>
