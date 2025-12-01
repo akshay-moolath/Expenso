@@ -15,7 +15,7 @@ class UserOut(BaseModel):
     email: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class LoginSchema(BaseModel):
     username: str
@@ -44,8 +44,8 @@ class ExpenseOut(BaseModel):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     class Config:#read sql object attributes and map to pydantic
-        orm_mode = True
-        
+        from_attributes = True
+
 class CategoryReq(BaseModel):
     title: str
     description: Optional[str] = ""
