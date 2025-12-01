@@ -45,3 +45,11 @@ class ExpenseOut(BaseModel):
     updated_at: Optional[datetime] = None
     class Config:#read sql object attributes and map to pydantic
         orm_mode = True
+        
+class CategoryReq(BaseModel):
+    title: str
+    description: Optional[str] = ""
+
+class CategoryResp(BaseModel):
+    category: str
+    source: Optional[str] = None

@@ -120,7 +120,18 @@
       <strong id="formTitle">Add Expense</strong>
       <form id="expenseForm" class="inline" onsubmit="return false;">
         <input name="title" placeholder="Title" required style="flex:2;min-width:140px" />
-        <input name="category" placeholder="Category" style="width:140px" />
+        <div style="display:flex;gap:6px;align-items:center">
+  <input name="category" placeholder="Category" style="width:160px" />
+  <button id="suggestCategoryBtn" class="btn ghost" type="button" title="Suggest category">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle">
+      <path d="M12 2v9a1 1 0 0 1-1 1H6"/>
+      <path d="M7 7l3 3 3-3"/>
+    </svg>
+    Suggest
+  </button>
+</div>
+
         <input name="amount" type="number" step="0.01" placeholder="Amount (₹)" required style="width:120px" />
         <input name="description" placeholder="Description" style="flex:3;min-width:160px" />
         <input type="hidden" name="id" />

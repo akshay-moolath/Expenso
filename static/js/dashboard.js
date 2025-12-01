@@ -351,6 +351,68 @@ async function exportPDF() {
   const filename = `expenses_${new Date().toISOString().slice(0,10)}.pdf`;
   doc.save(filename);
 }
+// in static/js/dashboard.js
+
+async function suggestCategoryForForm() {
+  console.log('[AI-server] suggestCategoryForForm called');
+  const title = (document.querySelector('input[name="title"]').value || '').trim();
+  const description = (document.querySelector('input[name="description"]').value || '').trim();
+
+  if (!title && !description) {
+    alert('Please enter title or description to suggest a category.');
+    return;
+  }
+
+  const btn = document.getElementById('suggestCategoryBtn');
+  if (btn) { btn.disabled = true; btn.setAttribute('data-old', btn.textContent); btn.textContent = 'Suggesting…'; }
+
+  try {
+    const res = await fetch(API_BASE + '/ai/category', {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ title, description })
+    });
+
+    const raw = await res.text().catch(()=>null);
+    console.log('[AI-server] raw response:', raw);
+
+    let j = null;
+    try { j = raw ? JSON.parse(raw) : null; } catch(e) { console.warn('[AI-server] JSON parse failed', e); }
+
+    if (!res.ok) {
+      throw new Error('Server returned ' + res.status + ' - ' + (j && j.detail ? JSON.stringify(j.detail) : raw));
+    }
+
+    if (j && j.category) {
+      document.querySelector('input[name="category"]').value = j.category;
+      console.log('[AI-server] category:', j.category, 'source:', j.source || 'unknown');
+      if (typeof showAISourceBadge === 'function') showAISourceBadge(j.source || 'rule-based');
+    } else {
+      console.warn('[AI-server] no category in response, parsed:', j);
+      alert('No suggestion returned. See console.');
+    }
+  } catch (err) {
+    console.error('[AI-server] Suggest failed:', err);
+    alert('Category suggestion failed. See console for details.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = btn.getAttribute('data-old') || 'Suggest'; btn.removeAttribute('data-old'); }
+  }
+}
+
+// ensure listener attaches
+document.addEventListener('DOMContentLoaded', () => {
+  const sbtn = document.getElementById('suggestCategoryBtn');
+if (sbtn) {
+  // detach old listener (if any), then attach the new one
+  try { sbtn.removeEventListener('click', suggestCategoryForForm); } catch(e) { /* ignore */ }
+  sbtn.addEventListener('click', suggestCategoryForForm);
+  console.log('[AI] suggest button attached');
+} else {
+  console.warn('[AI] suggest button not found on DOMContentLoaded');
+}
+
+});
+
 
 // wire buttons
 document.addEventListener('DOMContentLoaded', () => {
