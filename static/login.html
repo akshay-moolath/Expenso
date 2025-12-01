@@ -4,234 +4,214 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Login — Expenso</title>
+
   <style>
-    /* VARIABLES: LIGHT Theme colors */
     :root{
-      --bg: #f8fafc; 
-      --card: #ffffff;
-      --muted: #64748b; 
-      --accent: #1e40af; /* Main Blue Accent */
-      --ok: #059669; /* Success Green */
-      --danger: #b91c1c; /* Danger Red */
-      --text: #0f172a; /* Dark Text Color */
-      --radius:12px;
-      --gap:14px; 
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      --radius:16px;
+      --accent: #2563eb;
+      --accent-2: #06b6d4;
+      --muted: rgba(15,23,42,0.6);
+      --glass-1: rgba(255,255,255,0.65);
+      --glass-2: rgba(255,255,255,0.50);
+      --danger: #ef4444;
+      --ok: #059669;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      color-scheme: light;
     }
+
+    /* background */
     html,body{
       height:100%;
       margin:0;
-      /* Soft gradient background */
-      background: linear-gradient(135deg, var(--bg) 0%, #f1f5f9 100%);
-      color:var(--text);
-    }
-    .wrap{
-      min-height:100%;
+      background:
+        radial-gradient(900px 500px at 10% 10%, rgba(102,126,234,0.07), transparent 8%),
+        radial-gradient(700px 400px at 90% 80%, rgba(3,218,198,0.05), transparent 8%),
+        linear-gradient(180deg,#f8fafc,#eef2ff);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
       display:flex;
       align-items:center;
       justify-content:center;
       padding:28px;
     }
+
+    /* card */
     .card{
       width:100%;
-      max-width:420px;
-      /* Enhanced border and shadow for light theme */
-      background: var(--card);
-      border: 1px solid #e2e8f0;
+      max-width:460px;
       border-radius:var(--radius);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
-      padding:26px;
+      padding:28px;
+      background: linear-gradient(180deg, var(--glass-1), var(--glass-2));
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 14px 50px rgba(11,20,40,0.08);
+      backdrop-filter: blur(10px) saturate(120%);
+      -webkit-backdrop-filter: blur(10px) saturate(120%);
+      position:relative;
+      overflow:hidden;
     }
-    .card h2{
-      margin: 0 0 4px;
-      color: var(--accent);
-      font-size: 24px;
+
+    .card::before{
+      content:'';
+      position:absolute;
+      inset:-40% -40% auto -40%;
+      height:200px;
+      background: linear-gradient(90deg, rgba(96,165,250,0.06), rgba(16,185,129,0.04));
+      transform: rotate(6deg);
+      pointer-events:none;
     }
-    .card p.lead{
-      margin: 0 0 20px;
-      color: var(--muted);
-      font-size: 16px;
-    }
-    
-    .field{margin-bottom:var(--gap);}
-    .field label{
-      display:block;
-      margin-bottom:6px;
-      font-size:14px;
-      color:var(--muted);
-    }
+
+    h1{ margin:0 0 6px; font-size:26px; color:#0b3aa6; }
+    p.lead{ margin:0 0 18px; color:var(--muted); font-size:14px; }
+
+    .grid{ display:grid; gap:12px; margin-top:12px; }
+
+    label{ display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
     input{
       width:100%;
-      box-sizing:border-box;
-      padding:12px;
-      border-radius:8px;
-      background: #f1f5f9; /* Light input background */
-      border:1px solid #e2e8f0;
-      color:var(--text);
-      font-size:16px;
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(15,23,42,0.06);
+      background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(250,250,250,0.7));
+      font-size:15px;
+      color: #08203a;
       outline:none;
-      transition:border-color 0.2s, box-shadow 0.2s;
+      transition: box-shadow .12s ease, transform .06s ease, border-color .12s ease;
     }
+    input::placeholder{ color: rgba(11,20,40,0.35); }
+
     input:focus{
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
-      background: var(--card);
+      border-color: rgba(37,99,235,0.85);
+      box-shadow: 0 10px 30px rgba(37,99,235,0.06);
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.95);
     }
 
-    button{
-      border:0;
-      padding:12px 20px;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:600;
-      transition:all 0.2s;
-    }
-    button.primary{
+    .primary{
       width:100%;
-      background:linear-gradient(90deg,var(--accent),#3b82f6);
-      color:var(--card); /* White text for contrast */
-      margin-top:var(--gap);
-      box-shadow:0 4px 10px rgba(30, 64, 175, 0.3);
+      padding:12px 16px;
+      border-radius:12px;
+      border:0;
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      box-shadow: 0 10px 30px rgba(51,102,255,0.14);
+      margin-top:6px;
     }
-    button.primary:hover{transform:translateY(-1px);box-shadow:0 6px 15px rgba(30, 64, 175, 0.4)}
-    
-    .row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:var(--gap);
-    }
-    .row a {
-        color:var(--accent); 
-        text-decoration: none; 
-        font-weight: 600;
-    }
-    .row a:hover {
-        text-decoration: underline;
-    }
+    .primary:hover{ transform: translateY(-2px); box-shadow: 0 14px 40px rgba(51,102,255,0.2); }
 
-    /* Simple text feedback */
-    .msg-feedback{
-      margin-top:20px;
+    .footer{ margin-top:14px; text-align:center; color:var(--muted); font-size:14px; }
+    .footer a{ color:var(--accent); text-decoration:none; font-weight:600; }
+    .footer a:hover{ text-decoration:underline; }
+
+    #msg{
+      margin-top:14px;
+      padding:10px;
+      border-radius:8px;
+      font-weight:600;
+      display:none;
       font-size:14px;
-      text-align: center;
-      display: none; /* Hidden by default */
-      padding: 8px;
-      border-radius: 6px;
-      font-weight: 500;
     }
-    .msg-error{
-      color:var(--danger);
-      background: #ffebeb; /* Very light pink background */
-      border: 1px solid #fecaca;
-    }
-    .msg-success{
-      color:var(--ok);
-      background: #eafff5; /* Very light green background */
-      border: 1px solid #a7f3d0;
-    }
-    .msg-status{
-      color:var(--muted);
-      background: #f1f5f9; /* Neutral status background */
-      border: 1px solid #e2e8f0;
-    }
+    #msg.error{ display:block; background: rgba(254,226,226,0.95); color: #b91c1c; border:1px solid rgba(254,202,202,0.9); }
+    #msg.success{ display:block; background: rgba(220,253,235,0.95); color: #047857; border:1px solid rgba(167,243,208,0.9); }
+    #msg.status{ display:block; background: rgba(245,247,250,0.95); color:var(--muted); border:1px solid rgba(226,232,240,0.9); }
 
+    @media (max-width:520px){
+      .card{ padding:20px; border-radius:12px; }
+      h1{ font-size:22px; }
+    }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h2>Expenso Login</h2>
-      <p class="lead">Sign in to manage your expenses.</p>
+  <div class="card" role="main" aria-labelledby="login-title">
+    <h1 id="login-title">Welcome back</h1>
+    <p class="lead">Sign in to your Expenso account to view and manage your expenses.</p>
 
-      <form id="login-form">
-        <div class="field">
+    <form id="login-form" aria-describedby="msg">
+      <div class="grid">
+        <div>
           <label for="username">Username</label>
-          <input id="username" name="username" placeholder="Enter your username" required />
+          <input id="username" name="username" placeholder="Enter your username" required autocomplete="username" />
         </div>
-        <div class="field">
+
+        <div>
           <label for="password">Password</label>
-          <input id="password" name="password" type="password" placeholder="••••••••" required />
+          <input id="password" name="password" type="password" placeholder="••••••••" required autocomplete="current-password" />
         </div>
 
         <button class="primary" type="submit">Sign in</button>
-        <div class="row">
-          <small style="color:var(--muted)">
-            Don't have an account? 
-            <!-- Link pointing to the register page file -->
-            <a href="/register-page">Register here</a> 
-          </small>
-        </div>
+      </div>
 
-        <!-- Single, hidden feedback element for all messages -->
-        <div id="feedback-msg" class="msg-feedback" role="status" aria-live="polite"></div>
-      </form>
-    </div>
+      <div class="footer">
+        Don't have an account?
+        <a href="/register-page" aria-label="Go to register">Create an account</a>
+      </div>
+
+      <div id="msg" role="status" aria-live="polite"></div>
+    </form>
   </div>
 
 <script>
+/* Keeps existing backend logic intact:
+   - posts JSON to /api/login
+   - stores access_token and username in localStorage
+   - shows messages in #msg
+*/
 const form = document.getElementById('login-form');
-const feedbackMsg = document.getElementById('feedback-msg');
+const msg = document.getElementById('msg');
 
-function clearMessages() {
-    feedbackMsg.textContent = '';
-    feedbackMsg.style.display = 'none';
-    feedbackMsg.className = 'msg-feedback'; // Reset classes
+function setMsg(type, text){
+  msg.className = '';
+  msg.textContent = text;
+  if (type === 'error') {
+    msg.classList.add('error');
+    msg.style.display = 'block';
+  } else if (type === 'success') {
+    msg.classList.add('success');
+    msg.style.display = 'block';
+  } else {
+    msg.classList.add('status');
+    msg.style.display = 'block';
+  }
 }
 
-function showMessage(type, text) {
-    clearMessages();
-    feedbackMsg.textContent = text;
-    feedbackMsg.style.display = 'block';
-    
-    // Set class based on message type
-    if (type === 'error') {
-        feedbackMsg.classList.add('msg-error');
-    } else if (type === 'success') {
-        feedbackMsg.classList.add('msg-success');
-    } else {
-        feedbackMsg.classList.add('msg-status');
-    }
+function clearMsg(){
+  msg.style.display = 'none';
+  msg.className = '';
+  msg.textContent = '';
 }
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
-  showMessage('status', 'Signing in...');
+  clearMsg();
+  setMsg('status','Signing in…');
 
-  const payload = { 
-    username: form.username.value.trim(), 
-    password: form.password.value 
+  const payload = {
+    username: form.username.value.trim(),
+    password: form.password.value
   };
 
   try {
     const res = await fetch('/api/login', {
-      method: 'POST', 
+      method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify(payload)
     });
 
-    // Helper function to safely parse JSON response
     const body = await (async ()=>{ try{return await res.json()}catch{return null} })();
 
     if (res.ok) {
-      // store plain username for UI only
-      localStorage.setItem('username', body.username);
-localStorage.setItem('access_token', body.access_token);
-      showMessage('success', 'Login successful! Redirecting...');
-      
-      setTimeout(() => {
-        // Redirect to dashboard
-        window.location.href = '/dashboard'; 
-      }, 500);
-      
+      if (body?.username) localStorage.setItem('username', body.username);
+      if (body?.access_token) localStorage.setItem('access_token', body.access_token);
+
+      setMsg('success', 'Login successful — Redirecting…');
+      setTimeout(() => { window.location.href = '/dashboard'; }, 500);
     } else {
-      // Display specific error detail or generic fail message
-      showMessage('error', body?.detail || 'Login failed. Please check your credentials.');
+      setMsg('error', body?.detail || 'Login failed. Check credentials.');
     }
-  } catch(err) {
+  } catch (err) {
     console.error(err);
-    showMessage('error', 'Network error: check server connection.');
+    setMsg('error', 'Network error: check server connection.');
   }
 });
 </script>
